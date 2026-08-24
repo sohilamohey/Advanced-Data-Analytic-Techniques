@@ -47,3 +47,5 @@ The system combines Arabic text preprocessing, stylometric feature extraction, a
   - `feature_engineering.ipynb`
   - `modeling_tfidf.ipynb`
   - `modeling_bert.ipynb`
+
+![TF-IDF vs AraBERT Performance](images/tfidf_vs_arabert.png)
