@@ -1,53 +1,88 @@
 # Detection of AI-Generated Arabic Text
 
 ## Project Overview
-This project implements a full pipeline for detecting AI-generated Arabic academic abstracts.  
-The system combines Arabic text preprocessing, stylometric feature extraction, and machine/deep learning models to distinguish between human-written and AI-generated texts.
+
+This project presents an end-to-end pipeline for detecting AI-generated Arabic academic abstracts.
+
+The system combines Arabic-specific text preprocessing, stylometric feature extraction, TF-IDF representations, contextual embeddings, and machine/deep learning models to distinguish between human-written and AI-generated texts.
 
 ## Dataset
-- Source: Arabic Machine-Generated Text dataset from "The Arabic AI Fingerprint" study.
-- Final size after cleaning: 36,525 rows.
-- Label:
-  - 1 = Human-written abstract (original_abstract)
-  - 0 = AI-generated abstract (Allam, Jais, LLaMA, OpenAI)
+
+- Source: Arabic Machine-Generated Text dataset from *The Arabic AI Fingerprint* study.
+- Final size after cleaning: 36,525 abstracts.
+- Class distribution:
+  - Human-written: 2,992 abstracts (8.2%).
+  - AI-generated: 33,533 abstracts (91.8%).
+- Labels:
+  - `1` = Human-written abstract (`original_abstract`).
+  - `0` = AI-generated abstract (ALLaM, Jais, LLaMA, and OpenAI).
 
 ## Methods
 
 ### Preprocessing
-- Arabic text normalization (unifying letters, removing diacritics and non-Arabic symbols).
-- Tokenization and stopword removal (NLTK + extended Arabic list).
-- Stemming (ISRI) and lemmatization (Stanza).
-- Saving the cleaned dataset as `processed_dataset.csv`.
+
+- Arabic letter normalization.
+- Removal of diacritics, URLs, HTML tags, repeated punctuation, and text noise.
+- Tokenization and stopword removal using NLTK and an extended Arabic stopword list.
+- ISRI stemming and Stanza lemmatization.
+- Saving the processed data as `processed_dataset.csv`.
 
 ### Feature Engineering
-- Short word ratio (≤ 3 letters).
-- Sentence count and line statistics.
-- Foreign character ratio.
-- Redundancy score based on repeated n-grams.
-- TF-IDF features.
-- BERT-based embeddings for contextual representation.
+
+The extracted stylometric and textual features included:
+
+- Short-word ratio (words containing three letters or fewer).
+- Sentence count and structural statistics.
+- Foreign-character ratio.
+- Repeated n-gram redundancy score.
+- Vocabulary richness using the type-token ratio.
+- TF-IDF lexical features.
+- BERT-based contextual embeddings.
 
 ### Modeling
-- Classical models: Logistic Regression, Naïve Bayes, SVM, Random Forest, XGBoost.
-- Deep models: Feedforward Neural Network, simple DNN.
-- Train/val/test split: 70% / 15% / 15%.
-- Class balancing with SMOTE and feature scaling with StandardScaler.
 
-## Results (Summary)
-- TF-IDF + XGBoost achieved the best performance:
-  - Accuracy: 95.10%
-  - F1-score: 0.950
-- TF-IDF worked best with classical models, while BERT embeddings were more suitable for neural networks.
-- Stylometric analysis showed clear differences between human and AI texts in redundancy, sentence length, and vocabulary richness.
+Five classical machine-learning models were evaluated:
+
+- Logistic Regression.
+- Naïve Bayes.
+- Support Vector Machine.
+- Random Forest.
+- XGBoost.
+
+Two neural-network architectures were also evaluated:
+
+- Feedforward Neural Network.
+- Simple Deep Neural Network.
+
+### Data Splitting and Class Balancing
+
+- Stratified train/validation/test split: 70% / 15% / 15%.
+- SMOTE was applied only to the training set to balance the minority human-written class.
+- The validation and test sets retained their original class distributions.
+- StandardScaler was used to normalize numerical features.
+
+## Results
+
+TF-IDF outperformed BERT embeddings across the classical models evaluated with both representations: Logistic Regression, SVM, and XGBoost.
+
+The best overall configuration was TF-IDF with XGBoost:
+
+- Accuracy: 95.11%.
+- F1-score: 0.950.
+
+The strongest BERT-based result was achieved by the Simple DNN, with an accuracy of 91.86%.
+
+The stylometric analysis also showed measurable differences between human-written and AI-generated abstracts in sentence structure, redundancy, short-word usage, and vocabulary richness.
+
+### TF-IDF vs BERT Performance
+
+![TF-IDF vs BERT Performance](./tfidf_vs_arabert.png)
 
 ## Files
-- `processed_dataset.csv` : cleaned and preprocessed data.
-- Notebooks:
-  - `preprocessing.ipynb`
-  - `feature_engineering.ipynb`
-  - `modeling_tfidf.ipynb`
-  - `modeling_bert.ipynb`
 
-### TF-IDF vs AraBERT Performance
+- `processed_dataset.csv`: Cleaned and preprocessed dataset.
+- `preprocessing.ipynb`: Arabic text preprocessing pipeline.
+- `feature_engineering.ipynb`: Stylometric and textual feature extraction.
+- `modeling_tfidf.ipynb`: TF-IDF-based model training and evaluation.
+- `modeling_bert.ipynb`: BERT-based model training and evaluation.
 
-![TF-IDF vs AraBERT Performance](./tfidf_vs_arabert.png)
