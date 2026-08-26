@@ -70,7 +70,7 @@ The best overall configuration was TF-IDF with XGBoost:
 - Accuracy: 95.11%.
 - F1-score: 0.950.
 
-The strongest BERT-based result was achieved by the Simple DNN, with an accuracy of 91.86%.
+The strongest BERT-based result was achieved by the Feedforward Neural Network, with an accuracy of 92.01% — still below every classical model trained on TF-IDF.
 
 The stylometric analysis also showed measurable differences between human-written and AI-generated abstracts in sentence structure, redundancy, short-word usage, and vocabulary richness.
 
@@ -78,11 +78,38 @@ The stylometric analysis also showed measurable differences between human-writte
 
 ![TF-IDF vs BERT Performance](./tfidf_vs_arabert.png)
 
-## Files
+## Repository Structure
 
-- `processed_dataset.csv`: Cleaned and preprocessed dataset.
-- `preprocessing.ipynb`: Arabic text preprocessing pipeline.
-- `feature_engineering.ipynb`: Stylometric and textual feature extraction.
-- `modeling_tfidf.ipynb`: TF-IDF-based model training and evaluation.
-- `modeling_bert.ipynb`: BERT-based model training and evaluation.
+```
+notebooks/
+  1 Phase 1 & 2 .ipynb     Data preparation and Arabic text preprocessing
+  2 Phase 3.ipynb          Stylometric feature engineering, TF-IDF and AraBERT embeddings
+  3 Phase 4 & 5.ipynb      Model training, evaluation and comparison
+scripts/
+  data_preparation.py      Loading, cleaning and normalisation helpers
+  modeling.py              Training and evaluation routines
+  visualization.py         Plotting helpers
+  utils.py                 Shared utilities
+results/
+  figures/                 Word clouds, n-gram plots, lexical analysis, performance charts
+  presentations/           Project presentation
+docs/                      Full project report (DOCX and PDF)
+environment.yml            Conda environment
+requirements.txt           pip requirements
+```
 
+## Reproducing
+
+```bash
+conda env create -f environment.yml
+conda activate arabic-abstracts
+jupyter lab
+```
+
+Then run the notebooks in order. The dataset is not committed to the repository; download
+it from the source cited above and place it under `data/`.
+
+## Author
+
+**Sohila Mohey Mahmoud** — Data Analyst
+[GitHub](https://github.com/sohilamohey)
